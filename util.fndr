@@ -1,0 +1,161 @@
+@export *
+@import math::(pow, max, abs)
+@import logic::(and, xor, or, not)
+
+$copy = (a) {
+    $out = []
+    while ({out.len() < a.len()}, {
+        out.push(a[out.len()])
+    })
+    out
+}
+
+$reverse = (arr) {
+    $clone = copy(arr)
+    $middle = (clone.len()) / 2
+    $start = 0
+    $end = clone.len() - 1
+    while ({start < end}, {
+        clone.swap(start, end)
+        start += 1
+        end -= 1
+    })
+    clone
+}
+
+$join = (iterable, delim) {
+    $out = ""
+    $i = 0
+    while ({i < iterable.len()}, {
+        out += (str(iterable[i]) + delim)
+        i += 1
+    }) 
+    out 
+}
+
+$extend = (arr1, arr2) {
+    $out = arr1
+    $n = 0
+    while ({n < arr2.len()}, {
+        out.push(arr2[n])
+        n += 1
+    })
+    out
+}
+
+$zeros = (size) {
+    $out = []
+    while ({out.len() < size}, {
+        out.push(0)
+    })
+    out
+}
+
+$rightpad = (iterable, n, symbol) {
+    $out = iterable
+    while ({out.len() < n}, {
+        out.push(symbol)
+    })
+    out
+}
+
+$leftpad = (iterable, n, symbol) {
+    $out = []
+    while ({out.len() + iterable.len() < n}, {
+        out.push(symbol)
+    })
+    $i = 0
+    while ({i < iterable.len()}, {
+        out.push(iterable[i])
+        i += 1
+    })
+    out
+}
+
+$str2int = (m) {
+    "converts a string to an array of integers"
+    $i = 0
+    $out = []
+    while ({ i < m.len() }, {
+        out.push(int(m[i]))
+        i += 1
+    })
+    out
+}
+
+$binarr2int = (arr) {
+    $out = 0
+    $i = 0
+    $clone = reverse(copy(arr))
+    while ({i < clone.len()}, {
+        out += clone[i] * pow(2, i)
+        i += 1
+    })
+    out
+}
+
+$int2bin = (i) {
+    $out = []
+    $p = 0
+
+    while ({i > 0}, {
+        out.push(i % 2)
+        i = i / 2
+        p += 1
+    })
+
+    reverse(out)
+}
+
+$int2hex = (i) {
+    $hexchars = "0123456789ABCDEF"
+    $out = ""
+    $p = 0
+    while ({i > 0}, {
+        out += (hexchars[i % 16])
+        i = i / 16
+        p += 1
+    })
+    join(reverse(out), "")
+}
+
+$bitwise_op = (a, b, op) {
+    $in1 = int2bin(a)
+    $in2 = int2bin(b)
+
+    in1 = leftpad(in1, in2.len(), 0) 
+    in2 = leftpad(in2, in1.len(), 0) 
+
+    $out = []
+    $i = 0
+
+    while ({i < in1.len()}, {
+        out.push(op(in1[i], in2[i]))
+        i += 1
+    })
+    binarr2int(out)
+}
+
+$bitwise_and = (a, b) {
+    bitwise_op(a, b, and)
+}
+
+$bitwise_xor = (a, b) {
+    bitwise_op(a, b, xor)
+}
+
+$bitwise_or = (a, b) {
+    bitwise_op(a, b, or)
+}
+
+$bitwise_not = (a) {
+    -a - 1
+}
+
+$each = (list, func) {
+    $i = 0
+    while({i < list.len()}, {
+        list[i] = func(list[i])
+        i = i + 1
+    })
+}

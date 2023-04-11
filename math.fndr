@@ -1,0 +1,46 @@
+@export *
+
+$pow = (p, q) {
+    "calulate the power of p to the q"
+    $i = 0
+    $out = 0 + p
+    (q == 0).then({return 1})
+    while({i < q - 1}, {
+        out *= p
+        i += 1
+    })
+    out
+}
+
+$rshift = (n, p) {
+    "shift an integer n by p to the right, uses the property that n >> 1 == n/2"
+    $i = 0
+    while({i < p}, {
+        n = n/2
+        i += 1
+    })
+    n
+}
+
+$lshift = (n, p) {
+    "shift an integer n by p to the right, uses the property that n << 1 == n*2"
+    $i = 0
+    while({i < p}, {
+        n = n*2
+        i += 1
+    })
+    n
+}
+
+$max = (a, b) {
+    "returns the max value of two items"
+    (a > b).then({return a}).else({return b})    
+}
+
+$sign = (a) {
+    (a > 0).then({return 1}).else({return -1})
+}
+
+$abs = (a) {
+    a * sign(a)
+}
