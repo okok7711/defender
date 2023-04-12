@@ -18,6 +18,7 @@ $left_rotate = (n, b) {
     }
 
 $chunks = (iterable, size) {
+    "Chunks the given iterable into parts of a given size"
     $out = []
     $idx = 0
     while ({idx < iterable.len()}, {
@@ -32,6 +33,7 @@ $chunks = (iterable, size) {
 }
 
 $sha1 = (m) {
+    "computes the SHA-1 Hash digest of a given string"
     $h0 = 1732584193 # 0x67452301
     $h1 = 4023233417 # 0xEFCDAB89
     $h2 = 2562383102 # 0x98BADCFE

@@ -3,6 +3,7 @@
 @import logic::(and, xor, or, not)
 
 $copy = (a) {
+    "makes a copy of an array, very inefficient"
     $out = []
     while ({out.len() < a.len()}, {
         out.push(a[out.len()])
@@ -11,6 +12,7 @@ $copy = (a) {
 }
 
 $reverse = (arr) {
+    "reverses an array"
     $clone = copy(arr)
     $middle = (clone.len()) / 2
     $start = 0
@@ -24,6 +26,7 @@ $reverse = (arr) {
 }
 
 $join = (iterable, delim) {
+    "joins every element of an array into a string"
     $out = ""
     $i = 0
     while ({i < iterable.len()}, {
@@ -34,6 +37,7 @@ $join = (iterable, delim) {
 }
 
 $extend = (arr1, arr2) {
+    "extends one array into the other"
     $out = arr1
     $n = 0
     while ({n < arr2.len()}, {
@@ -44,6 +48,7 @@ $extend = (arr1, arr2) {
 }
 
 $zeros = (size) {
+    "returns an array of a given size filled with zeros"
     $out = []
     while ({out.len() < size}, {
         out.push(0)
@@ -52,6 +57,7 @@ $zeros = (size) {
 }
 
 $rightpad = (iterable, n, symbol) {
+    "pads an iterable to size n with a given symbol to the right"
     $out = iterable
     while ({out.len() < n}, {
         out.push(symbol)
@@ -60,6 +66,7 @@ $rightpad = (iterable, n, symbol) {
 }
 
 $leftpad = (iterable, n, symbol) {
+    "pads an iterable to size n with a given symbol to the left"
     $out = []
     while ({out.len() + iterable.len() < n}, {
         out.push(symbol)
@@ -84,6 +91,7 @@ $str2int = (m) {
 }
 
 $binarr2int = (arr) {
+    "converts a binary array into an integer"
     $out = 0
     $i = 0
     $clone = reverse(copy(arr))
@@ -95,6 +103,7 @@ $binarr2int = (arr) {
 }
 
 $int2bin = (i) {
+    "converts an integer into a binary array"
     $out = []
     $p = 0
 
@@ -108,6 +117,7 @@ $int2bin = (i) {
 }
 
 $int2hex = (i) {
+    "converts an integer into a hexadecimal string"
     $hexchars = "0123456789ABCDEF"
     $out = ""
     $p = 0
@@ -120,6 +130,7 @@ $int2hex = (i) {
 }
 
 $bitwise_op = (a, b, op) {
+    "base method for bitwise computation on two components"
     $in1 = int2bin(a)
     $in2 = int2bin(b)
 
@@ -137,22 +148,27 @@ $bitwise_op = (a, b, op) {
 }
 
 $bitwise_and = (a, b) {
+    "compute the bitwise and of two numbers (a & b)"
     bitwise_op(a, b, and)
 }
 
 $bitwise_xor = (a, b) {
+    "compute the bitwise xor of two numbers (a ^ b)"
     bitwise_op(a, b, xor)
 }
 
 $bitwise_or = (a, b) {
+    "compute the bitwise or of two numbers (a | b)"
     bitwise_op(a, b, or)
 }
 
 $bitwise_not = (a) {
+    "calculate the twos complement for a number"
     -a - 1
 }
 
 $each = (list, func) {
+    "execute a function for each element of a list"
     $i = 0
     while({i < list.len()}, {
         list[i] = func(list[i])

@@ -38,9 +38,11 @@ $max = (a, b) {
 }
 
 $sign = (a) {
+    "get the sign of a number"
     (a > 0).then({return 1}).else({return -1})
 }
 
 $abs = (a) {
+    "return the absolute value of a number"
     a * sign(a)
 }
