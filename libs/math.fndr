@@ -1,5 +1,19 @@
 @export *
 
+@import libs/logic::or
+
+$e = 2.7182818284590452353602874713527
+
+$sign = (a) {
+    "get the sign of a number"
+    (a > 0).then({return 1}).else({return -1})
+}
+
+$abs = (a) {
+    "return the absolute value of a number"
+    a * sign(a)
+}
+
 $pow = (p, q) {
     "calulate the power of p to the q"
     $i = 0
@@ -12,8 +26,18 @@ $pow = (p, q) {
     out
 }
 
+$exp = (n) {
+    pow(e, n)
+}
+
 $factorial = (n) {
-    
+    $out = 1
+    $i = 0
+    while ({i < n}, {
+        i += 1
+        out *= i
+    })
+    out
 }
 
 $rshift = (n, p) {
@@ -41,23 +65,17 @@ $max = (a, b) {
     (a > b).then({return a}).else({return b})    
 }
 
-$sign = (a) {
-    "get the sign of a number"
-    (a > 0).then({return 1}).else({return -1})
-}
-
-$abs = (a) {
-    "return the absolute value of a number"
-    a * sign(a)
-}
-
 $ceil = (x) {
     "return smallest integer greater than or equal to x"
     (int(x) == x).then({ return x})
     return int(x) + 1
 }
+$floor = (x) {
+    "return largest integer less than or equal to x"
+    return int(x)
+}
 
 $comb = (n, k) {
     "return the number of ways to choose k items from n items without repetition and without order"
-
+    factorial(n) / (factorial(k) * factorial(n - k))
 }

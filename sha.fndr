@@ -2,6 +2,7 @@
 @import libs/util
 @import libs/logic
 @import libs/math
+@import libs/arrays
 
 @export *
 
@@ -44,20 +45,20 @@ $sha1 = (m) {
     $n = 0
     while({n < m.len()}, {
         $character = util::int2bin(int(m[n]))
-        character = util::leftpad(character, 8, 0)
-        util::extend(bits, character)
+        character = arrays::leftpad(character, 8, 0)
+        arrays::extend(bits, character)
         n += 1
     })
 
     bits.push(1)
 
-    $pbits = util::copy(bits)
+    $pbits = arrays::copy(bits)
 
     while ({pbits.len() % 512 != 448}, {
         pbits.push(0)
     })
 
-    util::extend(pbits, util::leftpad(
+    arrays::extend(pbits, arrays::leftpad(
         util::int2bin(bits.len() - 1), 64, 0)
     )
     $_c = 0
@@ -65,7 +66,7 @@ $sha1 = (m) {
     while ({_c < inital.len()}, {
 
         $words = chunks(inital[_c], 32)
-        $w = util::zeros(80)
+        $w = arrays::zeros(80)
 
         n = 0
 
@@ -150,8 +151,8 @@ $sha1 = (m) {
     })
 
     $final = [h0, h1, h2, h3, h4]
-    util::each(final, util::int2hex)
-    util::join(final, "")
+    arrays::each(final, util::int2hex)
+    arrays::join(final, "")
 }
 
 sha1("")

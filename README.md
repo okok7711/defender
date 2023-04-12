@@ -18,6 +18,8 @@ Libraries:
 - [Some Maths stuff](./libs/math.fndr)
 - [Extended String Functionality](./libs/strings.fndr)
 - [Extended Map Functionality](./libs/maps.fndr)
+- [Extended Array Functionality](./libs/arrays.fndr)
+- [JSON Parder](./libs/json.fndr)
 
 Other Stuff:
 - [SHA-1](./sha.fndr)

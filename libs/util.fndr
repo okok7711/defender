@@ -2,83 +2,7 @@
 @import libs/math::(pow, max, abs, lshift)
 @import libs/logic::(and, xor, or, not)
 @import libs/strings::toUpper
-
-$copy = (a) {
-    "makes a copy of an array, very inefficient"
-    $out = []
-    while ({out.len() < a.len()}, {
-        out.push(a[out.len()])
-    })
-    out
-}
-
-$reverse = (arr) {
-    "reverses an array"
-    $clone = copy(arr)
-    $middle = (clone.len()) / 2
-    $start = 0
-    $end = clone.len() - 1
-    while ({start < end}, {
-        clone.swap(start, end)
-        start += 1
-        end -= 1
-    })
-    clone
-}
-
-$join = (iterable, delim) {
-    "joins every element of an array into a string"
-    $out = ""
-    $i = 0
-    while ({i < iterable.len()}, {
-        out += (str(iterable[i]) + delim)
-        i += 1
-    }) 
-    out 
-}
-
-$extend = (arr1, arr2) {
-    "extends one array into the other"
-    $out = arr1
-    $n = 0
-    while ({n < arr2.len()}, {
-        out.push(arr2[n])
-        n += 1
-    })
-    out
-}
-
-$zeros = (size) {
-    "returns an array of a given size filled with zeros"
-    $out = []
-    while ({out.len() < size}, {
-        out.push(0)
-    })
-    out
-}
-
-$rightpad = (iterable, n, symbol) {
-    "pads an iterable to size n with a given symbol to the right"
-    $out = iterable
-    while ({out.len() < n}, {
-        out.push(symbol)
-    })
-    out
-}
-
-$leftpad = (iterable, n, symbol) {
-    "pads an iterable to size n with a given symbol to the left"
-    $out = []
-    while ({out.len() + iterable.len() < n}, {
-        out.push(symbol)
-    })
-    $i = 0
-    while ({i < iterable.len()}, {
-        out.push(iterable[i])
-        i += 1
-    })
-    out
-}
+@import libs/arrays::(reverse, copy, join, leftpad, rightpad)
 
 $str2int = (m) {
     "converts a string to an array of integers"
@@ -182,13 +106,4 @@ $bitwise_or = (a, b) {
 $bitwise_not = (a) {
     "calculate the twos complement for a number"
     -a - 1
-}
-
-$each = (list, func) {
-    "execute a function for each element of a list"
-    $i = 0
-    while({i < list.len()}, {
-        list[i] = func(list[i])
-        i = i + 1
-    })
 }

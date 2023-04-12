@@ -1,17 +1,14 @@
 @import libs/logic
 @import libs/math
 @import libs/util
-@import sha::(sha1)
-
-$text = "test"
+@import libs/arrays
 
 println("any([1, 0, 0]): {logic::any([1, 0, 0])}")
 println("all([1, 1, 1]): {logic::all([1, 1, 1])}")
 println("pow(2, 2): {math::pow(2,2)}")
-println("reverse([1, 2, 3, 4]): {util::reverse([1, 2, 3, 4])}")
+println("reverse([1, 2, 3, 4]): {arrays::reverse([1, 2, 3, 4])}")
 println("binarr2int([0,0,1,1]): {util::binarr2int([0,0,1,1])}")
 println("int2bin(17): {util::int2bin(17)}")
-println("leftpad([1,0,1], 8, 0): {util::leftpad([1,0,1], 8, 0)}")
+println("leftpad([1,0,1], 8, 0): {arrays::leftpad([1,0,1], 8, 0)}")
 println("bitwise_and(23, 4): {util::bitwise_and(23, 4)}")
 println("bitwise_xor(23, 4): {util::bitwise_xor(23, 4)}")
-println("sha1('test') {sha1(text)}")

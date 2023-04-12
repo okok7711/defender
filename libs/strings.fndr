@@ -14,6 +14,11 @@ $ascii = [
 	32: ' ', 33: '!', 10: '\n'
 ]
 
+$numbers = [
+	'1', '2', '3', '4', '5',
+	'6', '7', '8', '9', '0'
+]
+
 $_baseTo = (s, left, right, sign) {
 	$out = ""
 	while ({out.len() < s.len()}, {
@@ -36,4 +41,17 @@ $toLower = (s) {
 $toUpper = (s) {
 	"converts a string to uppercase"
 	_baseTo(s, 96, 123, -1)
+}
+
+$splice = (s, start, end) {
+	"returns the substring of s[start:end]"
+	"if end is -1, everything after start will be returned"
+	(end == -1).then({end = s.len()})
+	$out = ""
+	$i = start
+	while ({bool(and(i < end, i < s.len()))}, {
+		out += s[i]
+		i += 1
+	})
+	out
 }

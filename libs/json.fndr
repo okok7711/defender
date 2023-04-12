@@ -1,0 +1,201 @@
+@export *
+"small json parser"
+"NOTE: every JSON object contains 0:0"
+"maps cant be initialised without a dummy k-v pair"
+"and maps dont implement .remove()"
+
+@import libs/strings
+@import libs/arrays
+@import libs/logic
+
+$JSON_COMMA = ','
+$JSON_COLON = ':'
+$JSON_LEFTBRACKET = '['
+$JSON_RIGHTBRACKET = ']'
+$JSON_LEFTBRACE = '{'
+$JSON_RIGHTBRACE = '}'
+$JSON_QUOTE = '"'
+$JSON_WHITESPACE = [' ', '\t', '\b', '\n', '\r']
+$JSON_SYNTAX = [JSON_COMMA, JSON_COLON, JSON_LEFTBRACKET, JSON_RIGHTBRACKET,
+               JSON_LEFTBRACE, JSON_RIGHTBRACE]
+
+$FALSE_LEN = "false".len()
+$TRUE_LEN = "true".len()
+$NULL_LEN = "null".len()
+
+$lex_string = (a) {
+	$json_string = ""
+	(a[0] == JSON_QUOTE).then({
+		a = strings::splice(a, 1, -1)
+	}).else({
+		return [null, a]
+	})
+	$c = 0
+	while ({c < a.len()}, {
+		(a[c] == JSON_QUOTE).then({
+			return [json_string, strings::splice(a, json_string.len() + 1, -1)]
+		}).else({
+			json_string += a[c]
+		})
+		c += 1
+	})
+}
+
+$lex_number = (a) {
+	$json_number = ""
+	$c = 0
+	$break = false
+	while ({bool(logic::and(c < a.len(), break == false))} ,{
+		
+		(arrays::contains(strings::numbers, a[c])).then({
+			json_number += a[c]
+		}).else({
+			break = true
+		})
+		c += 1
+	})
+	(json_number.len() == 0).then({return [null, a]})
+	[int(json_number), strings::splice(a, json_number.len(), -1)]
+}
+		
+$lex_bool = (a) {
+	$string_len = a.len()
+	(logic::and(string_len >= TRUE_LEN, strings::splice(a, 0, TRUE_LEN) == "true") == 1).then({
+		return [true, strings::splice(a, TRUE_LEN, -1)]
+	})
+	(logic::and(string_len >= FALSE_LEN, strings::splice(a, 0, FALSE_LEN) == "false") == 1).then({
+		return [false, strings::splice(a, FALSE_LEN, -1)]
+	}).else({
+		return [null, a]
+	})
+}
+
+$lex_null = (a) {
+	$string_len = a.len()
+	(logic::and(string_len >= NULL_LEN, strings::splice(a, 0, NULL_LEN) == "null") == 1).then({
+		return [true, strings::splice(a, NULL_LEN, -1)]
+	}).else({
+		return [null, a]
+	})
+}
+
+$lex = (string) {
+	$tokens = []
+	while ({string.len() > 0}, {
+		"Fender doesnt have continue so... here goes the elifs"
+		"also theres no variable unpacking so... yea"
+		$temp = lex_string(string)
+		$json_string = temp[0]
+		string = temp[1]
+		(json_string != null).then({
+			tokens.push(json_string)
+		}).else({
+			$temp = lex_number(string)
+			$json_number = temp[0]
+			string = temp[1] 
+			(json_number != null).then({
+				tokens.push(json_number)
+			}).else({
+				$temp = lex_bool(string)
+				$json_bool = temp[0]
+				string = temp[1]
+				(json_bool != null).then({
+					tokens.push(json_bool)
+				}).else({
+					$temp = lex_null(string)
+					$json_null = temp[0]
+					string = temp[1]
+					(json_null != null).then({
+						tokens.push(null)
+					}).else({
+						$c = string[0]
+						(arrays::contains(JSON_WHITESPACE, c)).then({string = strings::splice(string, 1, -1)}).else(
+							(arrays::contains(JSON_SYNTAX, c)).then({
+								tokens.push(c)
+								string = strings::splice(string, 1, -1)
+							})
+						)
+					})
+				})
+			})
+		})
+	})
+	tokens
+} 
+
+$_parse_tokens = (tokens, is_root) {
+	$parse_array = (tokens) {
+		$out = []
+		$t = tokens[0]
+		(t == JSON_RIGHTBRACKET).then({
+			return [out, arrays::splice(tokens, 1, -1)]
+		})
+		$break = false
+		while ({bool(logic::not(break))}, {
+			$temp = _parse_tokens(tokens, false)
+			$json = temp[0]
+			tokens = temp[1]
+	
+			out.push(json)
+
+			t = tokens[0]
+			(t == JSON_RIGHTBRACKET).then({
+				return [out, arrays::splice(tokens, 1, -1)]
+			})
+			(t != JSON_COMMA).then({
+				return [[], []]
+			}).else({
+				tokens = arrays::splice(tokens, 1, -1)
+			})
+		})
+	}
+	
+	$parse_object = (tokens) {
+		$out = [0:0]
+
+		$t = tokens[0]
+		(t == JSON_RIGHTBRACE).then({
+			return [out, arrays::splice(tokens, 1, -1)]
+		})
+
+		$break = false
+
+		while ({bool(logic::not(break))}, {
+			$json_key = tokens[0]
+			
+			tokens = arrays::splice(tokens, 1, -1)
+
+			(tokens[0] != JSON_COLON).then({
+				return [[], []]
+			})
+
+			$temp = _parse_tokens(arrays::splice(tokens, 1, -1), false)
+			$json_value = temp[0]
+			tokens = temp[1]
+
+			out.insert(json_key, json_value)
+
+			t = tokens[0]
+			(t == JSON_RIGHTBRACE).then({
+				return [out, arrays::splice(tokens, 1, -1)]
+			})
+			(t != JSON_COMMA).then({
+				return [[], []]
+			}).else({
+				tokens = arrays::splice(tokens, 1, -1)
+			})
+		})
+	}
+	$t = tokens[0]
+	(t == JSON_LEFTBRACKET).then({
+		return parse_array(arrays::splice(tokens, 1, -1))
+	})
+	(t == JSON_LEFTBRACE).then({
+		return parse_object(arrays::splice(tokens, 1, -1))
+	})
+	return [t, arrays::splice(tokens, 1, -1)]
+}
+
+$parse = (s) {
+	_parse_tokens(lex(s), true)[0]
+}
