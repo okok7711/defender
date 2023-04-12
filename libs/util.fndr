@@ -1,0 +1,194 @@
+@export *
+@import libs/math::(pow, max, abs, lshift)
+@import libs/logic::(and, xor, or, not)
+@import libs/strings::toUpper
+
+$copy = (a) {
+    "makes a copy of an array, very inefficient"
+    $out = []
+    while ({out.len() < a.len()}, {
+        out.push(a[out.len()])
+    })
+    out
+}
+
+$reverse = (arr) {
+    "reverses an array"
+    $clone = copy(arr)
+    $middle = (clone.len()) / 2
+    $start = 0
+    $end = clone.len() - 1
+    while ({start < end}, {
+        clone.swap(start, end)
+        start += 1
+        end -= 1
+    })
+    clone
+}
+
+$join = (iterable, delim) {
+    "joins every element of an array into a string"
+    $out = ""
+    $i = 0
+    while ({i < iterable.len()}, {
+        out += (str(iterable[i]) + delim)
+        i += 1
+    }) 
+    out 
+}
+
+$extend = (arr1, arr2) {
+    "extends one array into the other"
+    $out = arr1
+    $n = 0
+    while ({n < arr2.len()}, {
+        out.push(arr2[n])
+        n += 1
+    })
+    out
+}
+
+$zeros = (size) {
+    "returns an array of a given size filled with zeros"
+    $out = []
+    while ({out.len() < size}, {
+        out.push(0)
+    })
+    out
+}
+
+$rightpad = (iterable, n, symbol) {
+    "pads an iterable to size n with a given symbol to the right"
+    $out = iterable
+    while ({out.len() < n}, {
+        out.push(symbol)
+    })
+    out
+}
+
+$leftpad = (iterable, n, symbol) {
+    "pads an iterable to size n with a given symbol to the left"
+    $out = []
+    while ({out.len() + iterable.len() < n}, {
+        out.push(symbol)
+    })
+    $i = 0
+    while ({i < iterable.len()}, {
+        out.push(iterable[i])
+        i += 1
+    })
+    out
+}
+
+$str2int = (m) {
+    "converts a string to an array of integers"
+    $i = 0
+    $out = []
+    while ({ i < m.len() }, {
+        out.push(int(m[i]))
+        i += 1
+    })
+    out
+}
+
+$binarr2int = (arr) {
+    "converts a binary array into an integer"
+    $out = 0
+    $i = 0
+    $clone = reverse(copy(arr))
+    while ({i < clone.len()}, {
+        out += clone[i] * lshift(1, i)
+        i += 1
+    })
+    out
+}
+
+$int2bin = (i) {
+    "converts an integer into a binary array"
+    $out = []
+    $p = 0
+
+    while ({i > 0}, {
+        out.push(i % 2)
+        i = i / 2
+        p += 1
+    })
+
+    reverse(out)
+}
+
+$int2hex = (i) {
+    "converts an integer into a hexadecimal string"
+    $hexchars = "0123456789ABCDEF"
+    $out = ""
+    $p = 0
+    while ({i > 0}, {
+        out += (hexchars[i % 16])
+        i = i / 16
+        p += 1
+    })
+    join(reverse(out), "")
+}
+
+$hex2int = (h) {
+    "converts an integer into a hexadecimal string"
+    h = h.toUpper()
+    $i = 0
+    $out = 0
+    while ({i < h.len()}, {
+        $idx = int(h[i])
+        ( idx <= 58).then({
+            out += (idx - 48) * lshift(1, 4 * (h.len() - i - 1))
+        }).else({
+            out += (idx - 55) * lshift(1, 4 * (h.len() - i - 1))
+        })
+        i += 1
+    })
+    out
+}
+
+$bitwise_op = (a, b, op) {
+    "base method for bitwise computation on two components"
+    $in1 = int2bin(a)
+    $in2 = int2bin(b)
+
+    in1 = leftpad(in1, in2.len(), 0) 
+    in2 = leftpad(in2, in1.len(), 0) 
+
+    $out = []
+
+    while ({out.len() < in1.len()}, {
+        out.push(op(in1[out.len()], in2[out.len()]))
+    })
+    
+    binarr2int(out)
+}
+
+$bitwise_and = (a, b) {
+    "compute the bitwise and of two numbers (a & b)"
+    bitwise_op(a, b, and)
+}
+
+$bitwise_xor = (a, b) {
+    "compute the bitwise xor of two numbers (a ^ b)"
+    bitwise_op(a, b, xor)
+}
+
+$bitwise_or = (a, b) {
+    "compute the bitwise or of two numbers (a | b)"
+    bitwise_op(a, b, or)
+}
+
+$bitwise_not = (a) {
+    "calculate the twos complement for a number"
+    -a - 1
+}
+
+$each = (list, func) {
+    "execute a function for each element of a list"
+    $i = 0
+    while({i < list.len()}, {
+        list[i] = func(list[i])
+        i = i + 1
+    })
+}

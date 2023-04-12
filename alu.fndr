@@ -1,5 +1,5 @@
-@import logic::*
-@import util::(leftpad, each, reverse,join)
+@import libs/logic::*
+@import libs/util::(leftpad, each, reverse,join)
 
 $bitwise_opc = (a, b, op, inital_carry) {
 	"bitwise base operation with carry number"

@@ -1,11 +1,11 @@
 #!/mnt/z/gits/Fender/target/debug/fender
-@import util
-@import logic
-@import math
+@import libs/util
+@import libs/logic
+@import libs/math
 
 @export *
 
-$u32 = 4294967295
+$u32 = util::hex2int("ffffffff")
 
 $left_rotate = (n, b) {
     "Left rotate a 32-bit integer n by b bits."
@@ -34,11 +34,11 @@ $chunks = (iterable, size) {
 
 $sha1 = (m) {
     "computes the SHA-1 Hash digest of a given string"
-    $h0 = 1732584193 # 0x67452301
-    $h1 = 4023233417 # 0xEFCDAB89
-    $h2 = 2562383102 # 0x98BADCFE
-    $h3 = 271733878  # 0x10325476
-    $h4 = 3285377520 # 0xC3D2E1F0
+    $h0 = util::hex2int("67452301")
+    $h1 = util::hex2int("EFCDAB89")
+    $h2 = util::hex2int("98BADCFE")
+    $h3 = util::hex2int("10325476")
+    $h4 = util::hex2int("C3D2E1F0")
 
     $bits = []
     $n = 0
@@ -99,14 +99,14 @@ $sha1 = (m) {
             (bool(logic::and(0 <= i, i <= 19))).then({
                 $inner = util::bitwise_and(b, util::bitwise_xor(c, d))
                 f = util::bitwise_xor(d, inner)
-                k = 1518500249
+                k = util::hex2int("5A827999")
             })
 
             (bool(logic::and(20 <= i, i <= 39))).then({
                 f = util::bitwise_xor(
                         util::bitwise_xor(b, c), d
                 )
-                k = 1859775393
+                k = util::hex2int("6ED9EBA1")
             })
 
             (bool(logic::and(40 <= i, i <= 59))).then({
@@ -116,14 +116,14 @@ $sha1 = (m) {
                 f = util::bitwise_xor(
                         util::bitwise_xor(left, middle),
                     right)
-                k = 2400959708
+                    k = util::hex2int("8F1BBCDC")
             })
 
             (bool(logic::and(60 <= i, i <= 79))).then({
                 f = util::bitwise_xor(
                         util::bitwise_xor(b, c), d
                 )
-                k = 3395469782
+                k = util::hex2int("CA62C1D6")
             })
 
             $temp = util::bitwise_and(

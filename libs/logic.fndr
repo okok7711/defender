@@ -1,0 +1,69 @@
+@export *
+
+$and = (a, b) {
+    "calulate the logic a & b"
+    (bool(a)).then(
+        {(bool(b)).then(
+            {return 1}
+        )}
+    )
+    0
+}
+
+$not = (a) {
+    "calulate the logic !a"
+    (bool(a)).then({return 0})
+    1
+}
+
+$nand = (a, b) {
+    not(and(a, b))
+}
+
+$xor = (a, b) {
+    "calulate the logic a ^ b"
+    $s1 = nand(a, b)
+    $s2 = nand(s1, a)
+    $s3 = nand(s1, b)
+    nand(s3, s2)
+}
+
+$or = (a, b) {
+    "calulate the logic a | b"
+    $s1 = nand(a, a)
+    $s2 = nand(b, b)
+    nand(s1, s2)
+}
+
+$mux = (a, b, s) {
+    "MUX Gate implementation"
+    $s1 = nand(a, nand(s, s))
+    nand(s1, nand(b, s))
+}
+
+$demux = (i, s) {
+    "DEMUX Gate implementation"
+    $s1 = nand(i, nand(s, s))
+    $s2 = nand(i, s)
+    [nand(s1, s1), nand(s2, s2)]
+}
+
+$any = (iterable) {
+    "returns true if any of the items in the iterable are true"
+    $i = 0
+    while ({i < iterable.len()}, {
+        (bool(iterable[i])).then({return true})
+        i += 1
+    })
+    false
+}
+
+$all = (iterable) {
+    "returns true if all of the items in the iterable are true"
+    $i = 0
+    while ({i < iterable.len()}, {
+        (not(iterable[i]) == 1).then({return false})
+        i += 1
+    })
+    true
+}

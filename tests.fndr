@@ -1,6 +1,6 @@
-@import logic
-@import math
-@import util
+@import libs/logic
+@import libs/math
+@import libs/util
 @import sha::(sha1)
 
 $text = "test"

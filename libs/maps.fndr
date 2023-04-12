@@ -1,0 +1,12 @@
+"extended map functionality"
+
+@export *
+
+$get = (map, key, default) {
+	"implementation of map.get(key, default)"
+	"returns default when key is null"
+	(map[key] != null).then({
+		return map[key]
+	})
+	return default
+}

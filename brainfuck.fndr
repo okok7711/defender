@@ -1,4 +1,4 @@
-@import util::(zeros, each)
+@import libs/util::(zeros, each)
 
 $ascii = [
 	97: 'a', 98: 'b', 99: 'c', 100: 'd', 101: 'e', 102: 'f', 103: 'g', 104: 'h',
