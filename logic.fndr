@@ -11,24 +11,41 @@ $and = (a, b) {
 }
 
 $not = (a) {
-    "calulate the logic ~a"
+    "calulate the logic !a"
     (bool(a)).then({return 0})
     1
 }
 
+$nand = (a, b) {
+    not(and(a, b))
+}
+
 $xor = (a, b) {
     "calulate the logic a ^ b"
-    $s1 = not(and(a, b))
-    $s2 = not(and(s1, a))
-    $s3 = not(and(s1, b))
-    not(and(s3, s2)) 
+    $s1 = nand(a, b)
+    $s2 = nand(s1, a)
+    $s3 = nand(s1, b)
+    nand(s3, s2)
 }
 
 $or = (a, b) {
     "calulate the logic a | b"
-    $s1 = not(and(a, a)) 
-    $s2 = not(and(b, b))
-    not(and(s1, s2))
+    $s1 = nand(a, a)
+    $s2 = nand(b, b)
+    nand(s1, s2)
+}
+
+$mux = (a, b, s) {
+    "MUX Gate implementation"
+    $s1 = nand(a, nand(s, s))
+    nand(s1, nand(b, s))
+}
+
+$demux = (i, s) {
+    "DEMUX Gate implementation"
+    $s1 = nand(i, nand(s, s))
+    $s2 = nand(i, s)
+    [nand(s1, s1), nand(s2, s2)]
 }
 
 $any = (iterable) {

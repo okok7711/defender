@@ -138,12 +138,11 @@ $bitwise_op = (a, b, op) {
     in2 = leftpad(in2, in1.len(), 0) 
 
     $out = []
-    $i = 0
 
-    while ({i < in1.len()}, {
-        out.push(op(in1[i], in2[i]))
-        i += 1
+    while ({out.len() < in1.len()}, {
+        out.push(op(in1[out.len()], in2[out.len()]))
     })
+    
     binarr2int(out)
 }
 

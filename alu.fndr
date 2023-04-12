@@ -1,0 +1,46 @@
+@import logic::*
+@import util::(leftpad, each, reverse,join)
+
+$bitwise_opc = (a, b, op, inital_carry) {
+	"bitwise base operation with carry number"
+    a = leftpad(reverse(a), b.len(), 0) 
+    b = leftpad(reverse(b), a.len(), 0) 
+
+    $out = []
+
+	out.push(op(a[out.len()], b[out.len()], inital_carry))
+
+    while ({out.len() < a.len()}, {
+        out.push(op(a[out.len()], b[out.len()], out[out.len() - 1][1]))
+    })
+    each(out, (el) {el[0]})
+	reverse(out)
+}
+
+$bitwise_xor_op = (a, op) {
+	"bitwise base operation with carry number"
+    a = reverse(a)
+    $out = []
+    while ({out.len() < a.len()}, {
+        out.push(xor(a[out.len()], op))
+    })
+	reverse(out)
+}
+
+$full_adder = (a, b, carry) {
+	"implementation of a full adder"
+	$s1 = xor(a, b)
+	return [xor(carry, s1), or(and(a, b), and(carry, s1))]
+}
+
+$alu = (a, b, op) {
+	"small ALU"
+	"opcode 1 is subtract, opcode 0 is add"
+	bitwise_opc(a, bitwise_xor_op(b, op), full_adder, op)
+}
+
+$in1 = [0,0,0,0,1,1,1,1]
+$in2 = [0,0,0,0,0,1,1,1]
+
+println("sub: ", join(alu(in1, in2, 1), ""))
+println("add: ", join(alu(in1, in2, 0), ""))

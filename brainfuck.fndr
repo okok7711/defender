@@ -35,8 +35,6 @@ $interpret = (code, memsize) {
 	$jump_table = create_jump_table(code)
 	$pointer = 0
 	$i = 0
-	$m = 0
-	$open_braces = 0
 	while ({i < code.len()}, {
 		(code[i] == "<").then({
 			(pointer > 0).then({pointer -= 1})

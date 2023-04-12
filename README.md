@@ -12,10 +12,12 @@ Some stuff written in [Fender](https://github.com/FenderLang/Fender/) for fun.
 Feel free to open a PR and make it better or use my code for your projects!
 
 ### What this contains
-- Logic Gates
-- Bitwise Logic
-- Some Maths stuff
-- SHA-1
+- [Logic Gates](./logic.fndr)
+- [Bitwise Logic and other stuff](./util.fndr)
+- [Some Maths stuff](./math.fndr)
+- [SHA-1](./sha.fndr)
+- [Brainfuck](./brainfuck.fndr)
+- [Arithmatic Logic Unit](./alu.fndr)
 
 ### Why is this slow?
 [Fender](https://github.com/FenderLang/Fender/) is still in a very early stage and therefore contains very few native functions which means that most of them have to be implemented using other basic functions in [Fender](https://github.com/FenderLang/Fender/).
