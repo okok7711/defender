@@ -1,0 +1,30 @@
+@export *
+
+@import libs/arrays::(each, contains, apply)
+@import libs/maps::(items, setter)
+@import libs/strings::toLower
+@import libs/logic::not
+
+struct Response{body}
+struct Request{method, schema, host, uri, headers}
+
+$request = (req) {
+	"Executes a Request with the given Request struct"
+	$fullUri = "{req::schema}://{req::host}/{req::uri}"
+	$headerString = ""
+
+	(
+		bool(not(req::headers::keys.apply(toLower).contains("user-agent")))
+	).then({
+		req::headers.setter("User-Agent", "DeFender/0.1.0 (+https://github.com/okok7711/defender)")
+	})
+
+	req::headers.items().each((el) {
+		headerString += " -H \"{el[0]}: {el[1]}\""
+	})
+	
+	$command = "-X {req::method} \"{fullUri}\" {headerString}"
+	println(command
+	)
+	Response(shell("curl {command}"))
+}

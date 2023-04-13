@@ -1,0 +1,19 @@
+@export * 
+
+@import libs/maps::(hashMap, setter)
+@import libs/arrays::(contains)
+
+$count = (iterable) {
+	"Calculate the frequency of every item in an iterable"
+	$map = hashMap([], [])
+	$i = 0
+	while ({i < iterable.len()}, {
+		(map::keys.contains(iterable[i])).then({
+			map::content[iterable[i]] += 1
+		}).else({
+			map.setter(iterable[i], 1)
+		})
+		i += 1
+	})
+	map::content
+}

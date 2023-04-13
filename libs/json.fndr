@@ -1,12 +1,12 @@
 @export *
 "small json parser"
-"NOTE: every JSON object contains 0:0"
-"maps cant be initialised without a dummy k-v pair"
-"and maps dont implement .remove()"
+"NOTE: json::serialise() only works when json objects"
+"are put in via libs/maps::hashMap"
 
 @import libs/strings
 @import libs/arrays
 @import libs/logic
+@import libs/types::*
 
 $JSON_COMMA = ','
 $JSON_COLON = ':'
@@ -151,7 +151,7 @@ $_parse_tokens = (tokens, is_root) {
 	}
 	
 	$parse_object = (tokens) {
-		$out = [0:0]
+		$out = [:]
 
 		$t = tokens[0]
 		(t == JSON_RIGHTBRACE).then({
@@ -198,4 +198,42 @@ $_parse_tokens = (tokens, is_root) {
 
 $parse = (s) {
 	_parse_tokens(lex(s), true)[0]
+}
+
+$serialise = (object) {
+	$base_serialise = (element) {
+		$serialise_array = (array) {
+			$out = "["
+			arrays::each(array, (element) {
+				out += "{base_serialise(element)}, "
+			})
+			strings::splice(out,0 , out.len() - 2) + "]"
+		}
+
+		$serialise_object = (object) {
+			$out = "\{"
+			arrays::each(object::keys, (key) {
+				out += "{base_serialise(key)}: {object::content[key]}, "
+			})
+			strings::splice(out, 0, out.len() - 2) + "]"
+		}
+
+		$out = ""
+		(element.typeOf() == TYPE_ARR).then({
+			out += serialise_array(element)
+		}).else({
+			(element.typeOf() == TYPE_HASH).then({
+				out += serialise_object(element)
+			}).else({
+				(arrays::contains([TYPE_STRING, TYPE_ANY, TYPE_OBJ], element.typeOf())).then({
+					out += "\"{str(element)}\""
+				}).else({
+					out += str(element)
+				})
+			})
+		})
+		out
+	}
+
+	return base_serialise(object)
 }

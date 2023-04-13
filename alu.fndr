@@ -1,5 +1,5 @@
 @import libs/logic::*
-@import libs/util::(leftpad, each, reverse,join)
+@import libs/util::(leftpad, apply, reverse,join)
 
 $bitwise_opc = (a, b, op, inital_carry) {
 	"bitwise base operation with carry number"
@@ -13,7 +13,7 @@ $bitwise_opc = (a, b, op, inital_carry) {
     while ({out.len() < a.len()}, {
         out.push(op(a[out.len()], b[out.len()], out[out.len() - 1][1]))
     })
-    each(out, (el) {el[0]})
+    apply(out, (el) {el[0]})
 	reverse(out)
 }
 

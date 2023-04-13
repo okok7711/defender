@@ -65,6 +65,11 @@ $max = (a, b) {
     (a > b).then({return a}).else({return b})    
 }
 
+$min = (a, b) {
+    "returns the min value of two items"
+    (a < b).then({return a}).else({return b})
+}
+
 $ceil = (x) {
     "return smallest integer greater than or equal to x"
     (int(x) == x).then({ return x})

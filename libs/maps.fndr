@@ -1,6 +1,10 @@
 "extended map functionality"
 
 @export *
+@import libs/math
+@import libs/arrays
+
+struct _hashMap{keys, values, content}
 
 $get = (map, key, default) {
 	"implementation of map.get(key, default)"
@@ -9,4 +13,40 @@ $get = (map, key, default) {
 		return map[key]
 	})
 	return default
+}
+
+
+$getter = (_, key, default) {
+	"getter for HashMap not for the normal map"
+	get($::content, key, default)
+}
+
+$setter = (_ref, key, value) {
+	"setter for the hashMap"
+	$::content.insert(key, value)
+	$idx = arrays::find($::keys, key)
+	$values = $::values.ref()
+	$keys = $::keys.ref()
+	(idx > -1).then({
+		remove(_ref::keys, idx)
+		remove(_ref::values, idx)
+	})
+	_ref::values.push(value)
+	_ref::keys.push(key)
+}
+
+$items = (_ref) {
+	arrays::zip(_ref::keys, _ref::values)
+}
+
+$hashMap = (keys, values) {
+	$content = [:]
+	$i = 0
+
+	while ({i < math::min(keys.len(), values.len())}, {
+		content.insert(keys[i], values[i])
+		i += 1
+	})
+
+	_hashMap(keys, values, content)
 }

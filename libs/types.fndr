@@ -1,0 +1,59 @@
+#//! There's no built-in type() so strings will have to do
+
+@export * 
+
+@import libs/arrays::contains
+@import libs/strings::startsWith
+@import libs/logic::or
+
+$TYPE_STRING 	= "Str"
+$TYPE_CHAR 		= "Chr"	
+$TYPE_ARR		= "Arr"	
+$TYPE_OBJ		= "Obj"	
+$TYPE_INT		= "Int"	
+$TYPE_BOOL		= "Boo"	
+$TYPE_NULL		= "Nul"	
+$TYPE_ANY		= "Any"	
+$TYPE_HASH		= "Ham"	
+
+$typeOf = (var) {
+    "tries to determine the type of a variable"
+    (bool(var.len() + 1)).then({
+        #//! If our variable is an iterable
+        #//! Insert two temporary elements.
+        var.insert(0, null)
+        var.insert(1, null)
+    })
+    (bool(or(var / 1, var == 0))).then({
+        #//? How to Distinguish between Int/Float?
+        return TYPE_INT
+    })
+    (bool(var.swap(0, 1))).then({
+        #//* If we can swap, we have array
+        var.remove(0)
+        var.remove(0)
+        return TYPE_ARR
+    })
+    (bool(var + 1)).then({
+        #//* If we can still num_add, it's a string
+        return TYPE_STRING
+    })
+    (var["-1:this:should:be:null"] == null).then({
+        #//* If we can index via str, it's object
+        return TYPE_OBJ
+    })
+    ([true, false].contains(var)).then({
+        return TYPE_BOOL
+    })
+    (var == null).then({
+        return TYPE_NULL
+    })
+    (bool(int(var))).then({
+        return TYPE_CHAR
+    })
+    (bool(str(var).startsWith("_hashMap\{keys:"))).then({
+        #//? how to make check better
+        return TYPE_HASH
+    })
+	return TYPE_ANY
+}

@@ -1,0 +1,9 @@
+@import libs/requests::(Request, request)
+@import libs/maps::hashMap
+
+println(
+	request(Request("GET", "https", "httpbin.org",
+	"get", hashMap(["accept"], ["application/json"])
+	))
+)
+

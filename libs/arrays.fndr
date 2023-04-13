@@ -3,6 +3,7 @@
 @export *
 
 @import libs/logic::and
+@import libs/math
 
 $copy = (a) {
     "makes a copy of an array, very inefficient"
@@ -45,6 +46,17 @@ $extend = (arr1, arr2) {
     while ({n < arr2.len()}, {
         out.push(arr2[n])
         n += 1
+    })
+    out
+}
+
+$zip = (arr1, arr2) {
+    $length = math::min(arr1.len(), arr2.len())
+    $i = 0
+    $out = []
+    while ({i < length}, {
+        out.push([arr1[i], arr2[i]])
+        i += 1
     })
     out
 }
@@ -97,12 +109,21 @@ $contains = (iterable, item) {
 	(find(iterable, item) == -1).then({return false}).else({return true})
 }
 
-$each = (list, func) {
-    "execute a function for each element of a list"
+$apply = (list, func) {
+    "execute a function on each element of a list"
     $i = 0
     while({i < list.len()}, {
         list[i] = func(list[i])
-        i = i + 1
+        i += 1
+    })
+}
+
+$each = (list, func) {
+    "execute a function for every element of a list"
+    $i = 0
+    while({i < list.len()}, {
+        func(list[i])
+        i += 1
     })
 }
 

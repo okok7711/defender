@@ -1,11 +1,11 @@
-@import libs/util::(zeros, each)
+@import libs/util::(zeros, apply)
 @import libs/strings::(ascii)
 
 $create_jump_table = (code) {
 	$jump_table = [-1: -1]
 	$left_positions = []
 	$position = 0
-	each(code, (character) {
+	apply(code, (character) {
 		(character == "[").then({ 
 			left_positions.push(position)
 		})

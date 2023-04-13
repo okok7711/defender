@@ -3,6 +3,7 @@
 @export *
 @import libs/maps::get
 @import libs/logic::and
+@import libs/arrays::each
 
 $ascii = [
 	97: 'a', 98: 'b', 99: 'c', 100: 'd', 101: 'e', 102: 'f', 103: 'g', 104: 'h',
@@ -21,12 +22,12 @@ $numbers = [
 
 $_baseTo = (s, left, right, sign) {
 	$out = ""
-	while ({out.len() < s.len()}, {
-		$idx = int(s[out.len()])
+	each(s, (element) {
+		$idx = int(element)
 		(bool(and(left < idx, idx < right))).then({
-			out += ascii.get(idx + (sign * 32), s[out.len()])
+			out += ascii.get(idx + (sign * 32), element)
 		}).else({
-			out += s[out.len()]
+			out += element
 		})
 	})
 	out
@@ -52,6 +53,27 @@ $splice = (s, start, end) {
 	while ({bool(and(i < end, i < s.len()))}, {
 		out += s[i]
 		i += 1
+	})
+	out
+}
+
+$startsWith = (original, check) {
+	"check if a string (original) starts with a given string (check)"
+	(original.splice(0, check.len()) == check).then({
+		return true
+	})
+	return false
+}
+
+$replaceChar = (original, old, new) {
+	"replace every occurence of a char old with new char"
+	$out = ""
+	each(original, (element){
+		(element == old).then({
+			out += new
+		}).else({
+			out += element
+		})
 	})
 	out
 }

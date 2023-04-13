@@ -2,7 +2,7 @@
 @import libs/math::(pow, max, abs, lshift)
 @import libs/logic::(and, xor, or, not)
 @import libs/strings::toUpper
-@import libs/arrays::(reverse, copy, join, leftpad, rightpad)
+@import libs/arrays::(join, leftpad, rightpad)
 
 $str2int = (m) {
     "converts a string to an array of integers"
@@ -19,9 +19,8 @@ $binarr2int = (arr) {
     "converts a binary array into an integer"
     $out = 0
     $i = 0
-    $clone = reverse(copy(arr))
-    while ({i < clone.len()}, {
-        out += clone[i] * lshift(1, i)
+    while ({i < arr.len()}, {
+        out += arr[i] * lshift(1, (arr.len() - i - 1))
         i += 1
     })
     out
@@ -33,25 +32,25 @@ $int2bin = (i) {
     $p = 0
 
     while ({i > 0}, {
-        out.push(i % 2)
+        out.insert(0, i % 2)
         i = i / 2
         p += 1
     })
 
-    reverse(out)
+    out
 }
 
 $int2hex = (i) {
     "converts an integer into a hexadecimal string"
     $hexchars = "0123456789ABCDEF"
-    $out = ""
+    $out = []
     $p = 0
     while ({i > 0}, {
-        out += (hexchars[i % 16])
+        out.insert(0, hexchars[i % 16])
         i = i / 16
         p += 1
     })
-    join(reverse(out), "")
+    join(out, "")
 }
 
 $hex2int = (h) {
@@ -107,3 +106,4 @@ $bitwise_not = (a) {
     "calculate the twos complement for a number"
     -a - 1
 }
+

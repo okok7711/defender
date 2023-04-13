@@ -19,13 +19,16 @@ Libraries:
 - [Extended String Functionality](./libs/strings.fndr)
 - [Extended Map Functionality](./libs/maps.fndr)
 - [Extended Array Functionality](./libs/arrays.fndr)
-- [JSON Parder](./libs/json.fndr)
+- [JSON Parser](./libs/json.fndr)
+- [Counter library](./libs/counter.fndr)
+- [Type Library](./libs/types.fndr)
+- [(small) Request Library](./libs/requests.fndr)
 
 Other Stuff:
 - [SHA-1](./sha.fndr)
 - [Brainfuck](./brainfuck.fndr)
 - [Arithmatic Logic Unit](./alu.fndr)
-
+- [HTTPbin API Call](./httpbin.fndr)
 
 ### Why is this slow?
 [Fender](https://github.com/FenderLang/Fender/) is still in a very early stage and therefore contains very few native functions which means that most of them have to be implemented using other basic functions in [Fender](https://github.com/FenderLang/Fender/).

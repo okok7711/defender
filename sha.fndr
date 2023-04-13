@@ -52,14 +52,16 @@ $sha1 = (m) {
 
     bits.push(1)
 
-    $pbits = arrays::copy(bits)
+    $length = bits.len() - 1
+
+    $pbits = bits
 
     while ({pbits.len() % 512 != 448}, {
         pbits.push(0)
     })
 
     arrays::extend(pbits, arrays::leftpad(
-        util::int2bin(bits.len() - 1), 64, 0)
+        util::int2bin(length), 64, 0)
     )
     $_c = 0
     $inital = chunks(pbits, 512)
@@ -151,7 +153,7 @@ $sha1 = (m) {
     })
 
     $final = [h0, h1, h2, h3, h4]
-    arrays::each(final, util::int2hex)
+    arrays::apply(final, util::int2hex)
     arrays::join(final, "")
 }
 
