@@ -6,8 +6,9 @@
 >   <img alt="Danger" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/danger.svg">
 > </picture><br>
 >
-> **Warning Bad Code lies ahead**
-> **This code does not work on the latest version of fender i will need to rewrite practically all of it**
+> **Warning Bad Code lies ahead**  
+> **This code does not work on the latest version of fender i will need to rewrite practically all of it**  
+> **In case you want to use it and don't care about being on the latest version, just `git reset --hard 0e7fa8425cc901bbe736c47dc84b3975dbcb60e0` in your `git clone`d Fender and then re-compile**
 
 Some stuff written in [Fender](https://github.com/FenderLang/Fender/) for fun.
 Feel free to open a PR and make it better or use my code for your projects!
