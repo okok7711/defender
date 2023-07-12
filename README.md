@@ -7,6 +7,7 @@
 > </picture><br>
 >
 > **Warning Bad Code lies ahead**
+> **This code does not work on the latest version of fender i will need to rewrite practically all of it**
 
 Some stuff written in [Fender](https://github.com/FenderLang/Fender/) for fun.
 Feel free to open a PR and make it better or use my code for your projects!
